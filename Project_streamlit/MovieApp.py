@@ -9,10 +9,10 @@ custom_palette = ['#4B8BBE', '#306998', '#FFE873', '#FFD43B', '#646464']
 st.title('Movie Data Insights')
 
 st.header('Movie Revenue Over Time')
-selected_genre = st.selectbox('Select a Genre', df_movies['Primary_Genre'].unique())
-filtered_data_by_genre = df_movies[df_movies['Primary_Genre'] == selected_genre]
+selected_genre = st.selectbox('Select a Genre', df_movies['Genres'].unique())
+filtered_data_by_genre = df_movies[df_movies['Genres'] == selected_genre]
 fig1 = px.line(filtered_data_by_genre, x='Year', y='Revenue', title='Revenue Over Time by Genre', 
-               color='Primary_Genre', color_discrete_sequence=px.colors.qualitative.Plotly)
+               color='Genres', color_discrete_sequence=px.colors.qualitative.Plotly)
 fig1.update_layout(template='plotly_dark', colorway=custom_palette)
 st.plotly_chart(fig1)
 st.markdown('This line plot shows how movie revenues have varied over time within the selected genre.')
