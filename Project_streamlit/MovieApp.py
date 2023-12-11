@@ -5,9 +5,11 @@ import ast
 
 df_movies = pd.read_csv('MovieData.csv')
 
-df_movies['Genres'] = df_movies['Genres'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
-
-df_movies['Primary_Genre'] = df_movies['Genres'].apply(lambda x: x[0] if x and isinstance(x, list) and len(x) > 0 else 'Unknown')
+def extract_primary_genre(genres_str):
+    if pd.isna(genres_str) or genres_str == '':
+        return 'Unknown'
+    genres_list = genres_str.strip("[]").split(", ")  # Remove brackets and split by comma
+    return genres_list[0].strip("'\"")  # Remove any single or double quotes
 
 
 custom_palette = ['#4B8BBE', '#306998', '#FFE873', '#FFD43B', '#646464']
