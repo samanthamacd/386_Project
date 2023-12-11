@@ -1,15 +1,20 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import ast
 
 df_movies = pd.read_csv('MovieData.csv')
-df_movies['Primary_Genre'] = df_movies['Genres'].apply(lambda x: x[0] if x else 'Unknown')
+
+df_movies['Genres'] = df_movies['Genres'].apply(lambda x: ast.literal_eval(x) if isinstance(x, str) else x)
+
+df_movies['Primary_Genre'] = df_movies['Genres'].apply(lambda x: x[0] if x and isinstance(x, list) and len(x) > 0 else 'Unknown')
+
 
 custom_palette = ['#4B8BBE', '#306998', '#FFE873', '#FFD43B', '#646464']
 
 st.title('Movie Data Insights')
 
-st.header('Movie Revenue Over Time')
+st.header('Movie Revenue Over Time - by Genre')
 selected_genre = st.selectbox('Select a Genre', df_movies['Primary_Genre'].unique())
 filtered_data_by_genre = df_movies[df_movies['Primary_Genre'] == selected_genre]
 fig1 = px.line(filtered_data_by_genre, x='Year', y='Revenue', title='Revenue Over Time by Genre', 
